@@ -1,0 +1,28 @@
+# Editor configuration, see https://editorconfig.org
+
+# Some editors have builtin support for .editorconfig files, while some do not.
+# Look at the official documentation above to see if your specific editor comes
+# with support out of the box.
+
+# If you are using VS Code download the following extension, to enforce the rules:
+# https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig
+
+root = true
+
+[*]
+charset = utf-8
+indent_style = space
+indent_size = 4
+insert_final_newline = true
+trim_trailing_whitespace = true
+end_of_line = lf
+
+[*.ts]
+quote_type = single
+
+[*.md]
+max_line_length = off
+trim_trailing_whitespace = false
+
+[*.json]
+indent_size = 2
