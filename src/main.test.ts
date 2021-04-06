@@ -1,11 +1,19 @@
 describe('Test', () => {
+    beforeAll(() => {
+
+    });
+    afterAll(() => {
+
+    });
 
     beforeEach(() => {
-        console.log('before');
+
+    });
+    afterEach(() => {
+
     });
 
     it('works', () => {
-        console.log('it');
 
         expect(true).toBe(true);
     });
