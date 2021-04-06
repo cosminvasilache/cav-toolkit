@@ -3,7 +3,7 @@ export function blockThread(timeToBlock: number): void {
     while (Date.now() < startTime + timeToBlock) { }
 }
 
-export function debugIn(timeout: number) {
+export function debugAtTimeout(timeout: number) {
     const timeoutHandle = setTimeout(() => {
         debugger;
     }, timeout);
