@@ -117,16 +117,16 @@ function _objectAdjacentNodesGetter<T>(wrappedValue: IValueWrapper<T>) {
         .map(wrapValue);
 }
 
-function _objectActionFunction<T>(valueActionFunction: CallableFunction) {
+function _objectActionFunction<T>(valueActionFunction: (value: T) => boolean) {
     return function (wrappedValue: IValueWrapper<T>) {
         return valueActionFunction(unwrapValue(wrappedValue));
     }
 }
 export interface IObjectTraversalParams {
     rootObject: TGenericObject,
-    valueActionFunction: (value: unknown) => void,
+    valueActionFunction: (value: unknown) => boolean,
 }
-export function objectDfs({
+export function objectDfs<T>({
     rootObject,
     valueActionFunction,
 }: IObjectTraversalParams): void {
