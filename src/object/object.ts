@@ -1,3 +1,4 @@
+import { bfs, dfs } from "../dsa/graph";
 
 export type TObjectKey = string | number; // TODO there should be a built in type
 
@@ -89,4 +90,60 @@ export function safeGetValue(
         currentPosition = currentPosition[currentKey];
     }
     return currentPosition;
+}
+
+export type TPrimitive = string | number | boolean;
+export interface IValueWrapper<T> {
+    __value: T,
+};
+
+export function wrapValue<T>(value: T): IValueWrapper<T> {
+    return {
+        __value: value
+    };
+}
+
+export function unwrapValue<T>(wrappedValue: IValueWrapper<T>): T {
+    return wrappedValue.__value;
+}
+
+export function wrapPrimitiveValue<T extends TPrimitive>(primitiveValue: T): IValueWrapper<T> {
+    return wrapValue(primitiveValue);
+}
+
+function _objectAdjacentNodesGetter<T>(wrappedValue: IValueWrapper<T>) {
+    const valuesArr = Object.values(unwrapValue(wrappedValue)) as TGenericObject[];
+    return valuesArr
+        .map(wrapValue);
+}
+
+function _objectActionFunction<T>(valueActionFunction: CallableFunction) {
+    return function (wrappedValue: IValueWrapper<T>) {
+        return valueActionFunction(unwrapValue(wrappedValue));
+    }
+}
+export interface IObjectTraversalParams {
+    rootObject: TGenericObject,
+    valueActionFunction: (value: unknown) => void,
+}
+export function objectDfs({
+    rootObject,
+    valueActionFunction,
+}: IObjectTraversalParams): void {
+    return dfs({
+        rootNode: wrapValue(rootObject),
+        adjacentNodesGetter: _objectAdjacentNodesGetter,
+        nodeActionFunction: _objectActionFunction(valueActionFunction),
+    });
+}
+
+export function objectBfs({
+    rootObject,
+    valueActionFunction,
+}: IObjectTraversalParams) {
+    return bfs({
+        rootNode: wrapValue(rootObject),
+        adjacentNodesGetter: _objectAdjacentNodesGetter,
+        nodeActionFunction: _objectActionFunction(valueActionFunction),
+    });
 }
