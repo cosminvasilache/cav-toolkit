@@ -147,3 +147,32 @@ export function objectBfs({
         nodeActionFunction: _objectActionFunction(valueActionFunction),
     });
 }
+
+export function pickKeysFromObject<T extends TGenericObject, U extends (keyof T)[]>(sourceObject: T, keysToPick: U): Pick<T, U[number]> {
+    const newObject = {} as Pick<T, U[number]>;
+
+    for (let i = 0; i < keysToPick.length; i++) {
+        const currentKey = keysToPick[i];
+        newObject[currentKey] = sourceObject[currentKey];
+    }
+
+    return newObject;
+}
+
+
+
+export function excludeKeysFromObject<T extends TGenericObject, U extends (keyof T)[]>(sourceObject: T, keysToExclude: U): Omit<T, U[number]> {
+    const newObject = {} as Omit<T, U[number]>;
+
+    const sourceObjectKeys: (keyof T)[] = Object.keys(sourceObject);
+    for (let i = 0; i < sourceObjectKeys.length; i++) {
+        const currentKey = sourceObjectKeys[i];
+        // linear search, a Set<keyof T> could provide better performance for a large number of keys to exclude
+        if (!keysToExclude.includes(currentKey)) {
+            // @ts-expect-error
+            newObject[currentKey] = sourceObject[currentKey];
+        }
+    }
+
+    return newObject;
+}
