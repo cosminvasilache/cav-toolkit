@@ -1,3 +1,5 @@
+import {generateRandomPassword} from './password-generator';
+
 const generatedRandomPassword = generateRandomPassword({
     passwordLength: 12,
     characterSources: [

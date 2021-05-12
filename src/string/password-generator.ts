@@ -108,7 +108,7 @@ function initializeCharacterSourceFrequencyMap(characterSources: CharacterSource
 
 // IMPLEMENTATION =============================================
 
-function generateRandomPassword(config: RandomPasswordGeneratorConfig): string {
+export function generateRandomPassword(config: RandomPasswordGeneratorConfig): string {
     let resultingPassword: string = '';
     const sourceFrequencyMap = initializeCharacterSourceFrequencyMap(config.characterSources);
 
