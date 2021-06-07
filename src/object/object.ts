@@ -1,5 +1,9 @@
 import { bfs, dfs } from "../dsa/graph";
 
+export type TObjectEntries<T> = {
+    [P in keyof T]: [P, T[P]];
+}[keyof T][];
+
 export type TObjectKey = string | number; // TODO there should be a built in type
 
 export type TGenericObject = {
@@ -159,8 +163,6 @@ export function pickKeysFromObject<T extends TGenericObject, U extends (keyof T)
     return newObject;
 }
 
-
-
 export function excludeKeysFromObject<T extends TGenericObject, U extends (keyof T)[]>(sourceObject: T, keysToExclude: U): Omit<T, U[number]> {
     const newObject = {} as Omit<T, U[number]>;
 
@@ -175,4 +177,22 @@ export function excludeKeysFromObject<T extends TGenericObject, U extends (keyof
     }
 
     return newObject;
+}
+
+export function filterObjectValues<T extends Record<string, unknown>>(obj: T, filterFn: (v: unknown) => boolean): T {
+    return (Object.entries(obj) as TObjectEntries<T>)
+        .filter(([, value]) => {
+            return filterFn(value);
+        })
+        .reduce((acc, [key, value]) => {
+            acc[key] = value
+            return acc
+        }, {} as T)
+}
+
+
+export function filterObjectUndefinedValues<T extends Record<string, unknown>>(obj:T) {
+    return filterObjectValues(obj, (v) => {
+        return v !== undefined
+    });
 }
