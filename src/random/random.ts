@@ -18,7 +18,14 @@ export function shuffleArr<T>(arr: T[]): T[] {
     return arr;
 }
 
-export function pickRandomArrayElement<T>(arr: T[]): T {
-    const randomIndex = randomInteger(arr.length);
-    return arr[randomIndex];
+export function getRandomArrayIndex<T>(arr: T[]):number {
+    return randomInteger(arr.length);
+}
+
+export function getRandomArrayElement<T>(arr: T[]): T {
+    return arr[getRandomArrayIndex(arr)];
+}
+
+export function extractRandomArrayElement<T>(arr: T[]): T {
+    return arr.splice(getRandomArrayIndex(arr), 1)[0];
 }
