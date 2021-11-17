@@ -3,7 +3,6 @@ import * as webpack from 'webpack';
 import merge from 'webpack-merge';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
-import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 
 interface Environment {
@@ -23,6 +22,7 @@ const baseWebpackConfig: webpack.Configuration = {
     output: {
         filename: '[name].[contenthash].bundle.js',
         path: path.resolve(__dirname, 'dist'),
+        clean: true,
     },
     module: {
         rules: [
@@ -52,12 +52,11 @@ const baseWebpackConfig: webpack.Configuration = {
         new MiniCssExtractPlugin({
             filename: '[name].[contenthash].css',
         }),
-        new CleanWebpackPlugin(),
     ],
 };
 
 const prodWebpackConfig: webpack.Configuration = {
-   mode: 'production',
+    mode: 'production',
 };
 
 const devWebpackConfig: webpack.Configuration = {
@@ -68,12 +67,14 @@ const devWebpackConfig: webpack.Configuration = {
     },
 };
 
-const analyzeWebpackConfig: webpack.Configuration = {
-    plugins: [
-        new BundleAnalyzerPlugin({
+const createAnalyzeWebpackConfig = (): webpack.Configuration => {
+    return {
+        plugins: [
+            new BundleAnalyzerPlugin({
 
-        }),
-    ],
+            }),
+        ],
+    };
 };
 
 function createConfig(env: Environment) {
@@ -90,7 +91,7 @@ function createConfig(env: Environment) {
     }
 
     if (env.analyze) {
-        outputWebpackConfig = merge(outputWebpackConfig, analyzeWebpackConfig);
+        outputWebpackConfig = merge(outputWebpackConfig, createAnalyzeWebpackConfig());
     }
 
     return outputWebpackConfig;
