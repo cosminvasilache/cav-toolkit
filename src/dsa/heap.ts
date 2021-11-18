@@ -4,7 +4,7 @@
  * make the heap condition generic. Symbol on the heap array object?
  */
 
-import { defaultComparator } from "./utils";
+import { defaultComparator } from "../utils/utils";
 
 export type THeapArr<T> = [null, ...T[]];
 export type THeapCondition<T> = (a: T, b: T) => boolean;
